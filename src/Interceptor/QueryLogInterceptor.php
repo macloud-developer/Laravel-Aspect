@@ -22,6 +22,7 @@ namespace Ytake\LaravelAspect\Interceptor;
 use Illuminate\Contracts\Events\Dispatcher as EventDispatcher;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Log\LogManager;
+use Monolog\Level;
 use Ray\Aop\MethodInterceptor;
 use Ray\Aop\MethodInvocation;
 use Ytake\LaravelAspect\Annotation\AnnotationReaderTrait;
@@ -93,7 +94,7 @@ class QueryLogInterceptor extends AbstractLogger implements MethodInterceptor
         MethodInvocation $invocation
     ): array {
         return [
-            'level'   => $this->convertLogLevel($annotation->value),
+            'level'   => Level::fromValue($annotation->value)->toPsrLogLevel(),
             'message' => sprintf(
                 $this->format,
                 $annotation->name,
