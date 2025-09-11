@@ -56,7 +56,7 @@ abstract class AbstractLogger
         }
 
         return [
-            'level'   => Level::fromValue($annotation->value)->toPsrLogLevel(),
+            'level'   => $this->normalizeLogLevel($annotation->value),
             'message' => sprintf(
                 $this->format,
                 $annotation->name,
@@ -73,6 +73,30 @@ abstract class AbstractLogger
     public function setLogger(LoggerInterface $logger): void
     {
         static::$logger = $logger;
+    }
+
+    /**
+     * Normalize log level to integer for Monolog addRecord()
+     * 
+     * @param mixed $level Monolog Level enum, integer constant, or string
+     * @return int
+     */
+    protected function normalizeLogLevel($level): int
+    {
+        if (is_int($level)) {
+            return $level;
+        }
+        
+        if (is_string($level)) {
+            return Level::fromName($level)->value;
+        }
+        
+        if ($level instanceof Level) {
+            return $level->value;
+        }
+        
+        // Default fallback
+        return Level::Info->value;
     }
 
 }

@@ -58,7 +58,7 @@ class LogExceptionsInterceptor extends AbstractLogger implements MethodIntercept
                     } else {
                         $logger = $logger->driver();
                     }
-                    $logger->log($logFormat['level'], $logFormat['message'], $logFormat['context']);
+                    $logger->addRecord($logFormat['level'], $logFormat['message'], $logFormat['context']);
                 }
             }
             throw $exception;
