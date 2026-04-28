@@ -85,7 +85,7 @@ class RayAspectKernel implements AspectDriverInterface
      *
      * @throws ClassNotFoundException
      */
-    public function register(string $module = null): void
+    public function register(?string $module = null): void
     {
         if (!class_exists($module)) {
             throw new ClassNotFoundException($module);
